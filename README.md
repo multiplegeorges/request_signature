@@ -68,7 +68,7 @@ class ApiController < ApplicationController
       signature: signature,
       secret: secret_key,
       time: time,
-      params: params
+      params: params.as_json.except('action', 'controller') # THIS IS IMPORTANT. You are not verifying the signature of the action and controller.
     )
 
     verification.verify! # Raises exceptions on failure.
