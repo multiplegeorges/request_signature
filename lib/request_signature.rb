@@ -4,7 +4,7 @@ require "request_signature/verification"
 
 
 module RequestSignature
-  VERSION = "1.0.0"
+  VERSION = "1.0.1"
 
   class InvalidSignatureError < StandardError; end
   class PeriodExpiredError < StandardError; end
