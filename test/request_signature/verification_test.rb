@@ -96,5 +96,47 @@ describe RequestSignature::Request do
 
       verification.verify.must_equal false
     end
+
+    it 'accepts params in a different order' do
+      params = { a: 'A', b: 'B', c: 'C' }
+      request = RequestSignature::Request.new(params: params, secret: keys[:a])
+
+      verification = RequestSignature::Verification.new(
+        signature: request.signature,
+        secret: keys[:a],
+        time: Time.now.to_i - 30,
+        params: { c: 'C', b: 'B', a: 'A' }
+      )
+
+      verification.verify.must_equal true
+    end
+
+    it 'accepts params in a different order and deeply nested' do
+      params = { a: 'A', b: { z: 3, x: { q: 4, e: 5 } }, c: 'C' }
+      request = RequestSignature::Request.new(params: params, secret: keys[:a])
+
+      verification = RequestSignature::Verification.new(
+        signature: request.signature,
+        secret: keys[:a],
+        time: Time.now.to_i - 30,
+        params: params = { a: 'A', b: { x: { e: 5, q: 4 }, z: 3 }, c: 'C' }
+      )
+
+      verification.verify.must_equal true
+    end
+
+    it 'accepts deeply nested params with string keys' do
+      params = { 'a': 'A', 'b': { 'z': 3, 'x': { 'q': 4, 'e': 5 } }, 'c': 'C' }
+      request = RequestSignature::Request.new(params: params, secret: keys[:a])
+
+      verification = RequestSignature::Verification.new(
+        signature: request.signature,
+        secret: keys[:a],
+        time: Time.now.to_i - 30,
+        params: params = { a: 'A', b: { x: { e: 5, q: 4 }, z: 3 }, c: 'C' }
+      )
+
+      verification.verify.must_equal true
+    end
   end
 end

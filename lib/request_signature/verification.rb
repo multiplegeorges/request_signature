@@ -4,7 +4,7 @@ module RequestSignature
       @signature = signature
       @secret = secret
       @time = time
-      @params = params
+      @params = RequestSignature.configuration.sort_params ? params.deep_sort : params
     end
 
     def verify

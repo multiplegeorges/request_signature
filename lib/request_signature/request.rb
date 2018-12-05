@@ -7,7 +7,7 @@ module RequestSignature
     attr_reader :params
 
     def initialize(params:, secret:)
-      @params = params
+      @params = RequestSignature.configuration.sort_params ? params.deep_sort : params
       @secret = secret
       @time = Time.now.to_i
     end

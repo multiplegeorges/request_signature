@@ -42,7 +42,7 @@ describe RequestSignature::Request do
       }
 
       request = RequestSignature::Request.new(params: params, secret: '123abc')
-      request.signature.must_equal "5498b7e3e68b7a3780e1b3d6f1a43e12827545ff11fbfcac6e5c895e01d16fa5"
+      request.signature.must_equal "ff0063ae9ea27c21e50ca430076ed08810fd36d6a62480c35175ff81b0494d75"
     end
   end
 end
